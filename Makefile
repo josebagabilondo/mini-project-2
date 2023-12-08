@@ -1,15 +1,29 @@
-# Nombre de la aplicación
-APPLICATION = mini-project-1
+APPLICATION = mini-project
 
-# Plataforma de destino (ajusta según tu hardware)
 BOARD ?= iotlab-m3
 
 RIOTBASE ?= $(CURDIR)/../RIOT
 
-# Incluir módulos necesarios (por ejemplo, sensores)
 USEMODULE += lps331ap
 USEMODULE += xtimer
+USEMODULE += netdev_default
+USEMODULE += netutils
 
-# Incluir el archivo principal de la aplicación
+LWIP ?= 0
+
+ifeq (0,$(LWIP))
+  USEMODULE += auto_init_gnrc_netif
+  # Specify the mandatory networking modules
+  USEMODULE += gnrc_ipv6_default
+  # Additional networking modules that can be dropped if not needed
+  USEMODULE += gnrc_icmpv6_echo
+else
+  USEMODULE += lwip_ipv6
+  USEMODULE += lwip_netdev
+endif
+
+USEMODULE += gcoap
+
+DEVELHELP ?= 1
+
 include $(RIOTBASE)/Makefile.include
-
