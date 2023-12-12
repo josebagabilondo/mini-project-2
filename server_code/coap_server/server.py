@@ -17,7 +17,7 @@ def create_connection():
     try:
         connection = mysql.connector.connect(
             host="172.20.0.11",
-            user="manex",
+            user="root",
             password="manexmanex",
             database="iotDB",
             auth_plugin='mysql_native_password'
@@ -29,7 +29,7 @@ def create_connection():
         return -1
     except:
         print("Could not connect to mysql")
-        
+
 connection = create_connection()
 
 class test_handler(resource.Resource):
@@ -40,7 +40,7 @@ class handler(resource.Resource):
     def __init__(self,data_type):
         super().__init__()
         self.data_type = data_type
-        
+
     async def render_post(self, request):
         payload = request.payload.decode('utf-8')
         print(f"POST request received with payload: {payload}")
@@ -52,7 +52,7 @@ def insert_data(payload, data_type):
     try:
         connection = mysql.connector.connect(
             host="172.20.0.11",
-            user="manex",
+            user="root",
             password="manexmanex",
             database="iotDB",
             auth_plugin='mysql_native_password'

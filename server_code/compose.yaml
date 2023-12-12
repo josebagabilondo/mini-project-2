@@ -24,6 +24,17 @@ services:
       - mysql-data:/var/lib/mysql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
+  grafana:
+    hostname: grafana
+    container_name: grafana
+    ports:
+      - '3000:3000'
+    image: grafana/grafana-oss
+    #volumes:
+    #  - ./grafana.ini:/etc/grafana/grafana.ini
+    networks:
+      - my_net
+
 networks:
   my_net:
     name: my_net
