@@ -13,8 +13,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: manexmanex
       MYSQL_DATABASE: iotDB
-      MYSQL_USER: manex
-      MYSQL_PASSWORD: manexmanex
     ports:
       - '3306:3306'  # Expose MySQL port
     networks:
