@@ -2,35 +2,48 @@ import datetime
 import logging
 import asyncio
 
-import mysql.connector
+from mysql.connector import pooling
 import aiocoap.resource as resource
 from aiocoap.numbers.contentformat import ContentFormat
 import aiocoap
+import time
+
 
 # logging setup
 logging.basicConfig(level=logging.INFO)
 logging.getLogger("coap-server").setLevel(logging.DEBUG)
 
+ip_to_number = {}
+next_number = 1  # Start counting from 1
 
+def get_or_assign_number(ip_address):
+    global next_number
 
-def create_connection():
+    if ip_address not in ip_to_number:
+        ip_to_number[ip_address] = next_number
+        next_number += 1
+
+    return ip_to_number[ip_address]
+
+attemps = 0
+while attemps < 10:
     try:
-        connection = mysql.connector.connect(
+        pool = pooling.MySQLConnectionPool(
+            pool_name="mypool",
+            pool_size=5,
+            pool_reset_session=True,
             host="172.20.0.11",
             user="root",
             password="manexmanex",
             database="iotDB",
             auth_plugin='mysql_native_password'
         )
-
-        return connection
-    except mysql.connector.Error as err:
-        print(f'Error: {err}')
-        return -1
+        break
+        print("Connection established correctly")
     except:
-        print("Could not connect to mysql")
-
-connection = create_connection()
+        attemps += 1
+        print("Error: Couldn't connect to database")
+        time.sleep(5)
 
 class test_handler(resource.Resource):
     async def render_get(self, request):
@@ -44,23 +57,17 @@ class handler(resource.Resource):
     async def render_post(self, request):
         payload = request.payload.decode('utf-8')
         print(f"POST request received with payload: {payload}")
-        insert_data(payload, self.data_type)
+        insert_data(payload, self.data_type, get_or_assign_number(request.remote))
         return aiocoap.Message(code=aiocoap.numbers.codes.CREATED, payload=f"ALL OK {payload}".encode('utf-8'))
 
 
-def insert_data(payload, data_type):
+def insert_data(payload, data_type,ip_id):
     try:
-        connection = mysql.connector.connect(
-            host="172.20.0.11",
-            user="root",
-            password="manexmanex",
-            database="iotDB",
-            auth_plugin='mysql_native_password'
-        )
-        cursor = connection.cursor()
-        query = f"INSERT INTO {data_type}_data ({data_type}, ts) VALUES ({payload}, CURRENT_TIMESTAMP);"
-        cursor.execute(query)
-        connection.commit()
+        with pool.get_connection() as connection:
+            cursor = connection.cursor()
+            query = f"INSERT INTO {data_type}_data ({data_type}, idSensor, time) VALUES ({payload}, {ip_id}, CURRENT_TIMESTAMP);"
+            cursor.execute(query)
+            connection.commit()
     except mysql.connector.Error as err:
         print(f'Error: {err}')
     except:

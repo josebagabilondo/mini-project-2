@@ -1,2 +1,2 @@
 aiocoap
-mysql-connector
+mysql-connector-python

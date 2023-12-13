@@ -28,8 +28,8 @@ services:
     ports:
       - '3000:3000'
     image: grafana/grafana-oss
-    #volumes:
-    #  - ./grafana.ini:/etc/grafana/grafana.ini
+    volumes:
+      - grafana-data:/var/lib/grafana
     networks:
       - my_net
 
@@ -42,3 +42,4 @@ networks:
 
 volumes:
   mysql-data:
+  grafana-data:
