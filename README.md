@@ -41,7 +41,7 @@ $ make DEFAULT_CHANNEL=5 all
 ```
 
 ## Step 4: Create and Configure IoT-Lab Experiment
-&nbsp;&nbsp;&nbsp;&nbsp;Submitt an experiment to Iot-Lab testbed requesting five free nodes with m3 architecture and Grenoble as the site.
+&nbsp;&nbsp;&nbsp;&nbsp;Submit an experiment to Iot-Lab testbed requesting five free nodes with m3 architecture and Grenoble as the site.
 ```bash
 $ iotlab-experiment submit -n mini1 -d 60 -l 5,archi=m3:at86rf231+site=grenoble
 ```
