@@ -72,7 +72,7 @@ $ iotlab-node --flash node_code/bin/iotlab-m3/mini-project.elf -l grenoble,m3,96
 ```bash
 $ ssh -i "IOTLAB.pem" admin@ec2-51-20-254-148.eu-north-1.compute.amazonaws.com
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;Access the server_code, and instruct Docker to start running the coap server, which will get the data of the sensors and upload it on the cloud,  the mysql, which will create given tables with the data, and grafana, which will later visualize that data:
+&nbsp;&nbsp;&nbsp;&nbsp;Access the server_code, and instruct Docker to start running the coap server, which will get the data of the sensors and upload it on the cloud,  the mysql, which will create given tables with the data, and grafana, which will later visualize those tables:
 ```bash
 $ cd server_code
 $ sudo docker-compose up
