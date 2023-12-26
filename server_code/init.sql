@@ -20,3 +20,8 @@ CREATE TABLE IF NOT EXISTS light_data (
     idSensor INT,
     time TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS ip_to_id (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    ipv6_address VARCHAR(46) NOT NULL
+);

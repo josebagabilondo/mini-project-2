@@ -13,18 +13,7 @@ import time
 logging.basicConfig(level=logging.INFO)
 logging.getLogger("coap-server").setLevel(logging.DEBUG)
 
-ip_to_number = {}
-next_number = 1  # Start counting from 1
-
-def get_or_assign_number(ip_address):
-    global next_number
-
-    if ip_address not in ip_to_number:
-        ip_to_number[ip_address] = next_number
-        next_number += 1
-
-    return ip_to_number[ip_address]
-
+# Create mySQL connection pooler
 attemps = 0
 while attemps < 10:
     try:
@@ -45,6 +34,28 @@ while attemps < 10:
         print("Error: Couldn't connect to database")
         time.sleep(5)
 
+
+ip_to_number = {}
+with pool.get_connection() as connection:
+    cursor = connection.cursor()
+    cursor.execute("SELECT id,ipv6_address FROM ip_to_id")
+    for x in cursor.fetchall():
+        ip_to_number[x[1]] = x[0]
+
+
+def get_or_assign_number(ip_address):
+    if ip_address not in ip_to_number:
+        with pool.get_connection() as connection:
+            cursor = connection.cursor()
+            cursor.execute(f"INSERT INTO ip_to_id (ipv6_address) VALUES ('{ip_address}')")
+            cursor.execute("SELECT LAST_INSERT_ID()")
+            database_id = cursor.fetchone()[0]
+            connection.commit()
+        ip_to_number[ip_address] = database_id
+
+    return ip_to_number[ip_address]
+
+
 class test_handler(resource.Resource):
     async def render_get(self, request):
         return aiocoap.Message(payload="Terve, everything good!".encode('utf8'))
@@ -57,7 +68,8 @@ class handler(resource.Resource):
     async def render_post(self, request):
         payload = request.payload.decode('utf-8')
         print(f"POST request received with payload: {payload}")
-        insert_data(payload, self.data_type, get_or_assign_number(request.remote))
+        ip = request.remote.hostinfo.split("]")[0][1:]
+        insert_data(payload, self.data_type, get_or_assign_number(ip))
         return aiocoap.Message(code=aiocoap.numbers.codes.CREATED, payload=f"ALL OK {payload}".encode('utf-8'))
 
 
