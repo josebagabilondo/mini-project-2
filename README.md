@@ -43,7 +43,7 @@ $ make DEFAULT_CHANNEL=5 all
 ## Step 4: Create and Configure IoT-Lab Experiment
 &nbsp;&nbsp;&nbsp;&nbsp;Submit an experiment to Iot-Lab testbed requesting five free nodes with m3 architecture and Grenoble as the site.
 ```bash
-$ iotlab-experiment submit -n mini1 -d 60 -l 5,archi=m3:at86rf231+site=grenoble
+$ iotlab-experiment submit -n mini1 -d 60 -l 3,archi=m3:at86rf231+site=grenoble
 ```
 &nbsp;&nbsp;&nbsp;&nbsp;View the activated nodes and their details, take into account the id of the nodes, will be important:
 ```bash
@@ -65,7 +65,7 @@ $ cd mini-project-1/
 ```
 &nbsp;&nbsp;&nbsp;&nbsp;Prepare the other nodes for their roles in the experiment, taking the compiled code of the second make command (take the id's of the nodes that weren't used for the border router):
 ```bash
-$ iotlab-node --flash node_code/bin/iotlab-m3/mini-project.elf -l grenoble,m3,96+97+101+102
+$ iotlab-node --flash node_code/bin/iotlab-m3/mini-project.elf -l grenoble,m3,96+97
 ```
 ## Step 6: Connect to the Server:
 &nbsp;&nbsp;&nbsp;&nbsp;Open a new terminal and in it connect to our server, which is an amazon aws server:
@@ -78,4 +78,4 @@ $ cd server_code
 $ sudo docker-compose up
 ```
 ## Step 6: Access Grafana:
-&nbsp;&nbsp;&nbsp;&nbsp;With the account and password of admin admin, access the Grafana and in there you will see the data visualization.
+&nbsp;&nbsp;&nbsp;&nbsp;Click on the link to get the data on Grafana: http://ec2-51-20-254-148.eu-north-1.compute.amazonaws.com:3000/public-dashboards/91a4ed78ec064712925d7cc58c83ecee?orgId=1&refresh=5s&from=now-5m&to=now
