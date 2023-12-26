@@ -17,7 +17,7 @@ $ git clone https://github.com/manexsora/mini-project-1
 ```
 &nbsp;&nbsp;&nbsp;&nbsp;Access repository:
 ```bash
-$ cd mini-project-1
+$ cd mini-project-1/
 ```
 
 ## Step 2: Clone RIOT Operating System
@@ -74,8 +74,8 @@ $ ssh -i "IOTLAB.pem" admin@ec2-51-20-254-148.eu-north-1.compute.amazonaws.com
 ```
 &nbsp;&nbsp;&nbsp;&nbsp;Access the server_code, and instruct Docker to start running the coap server, which will get the data of the sensors and upload it on the cloud,  the mysql, which will create given tables with the data, and grafana, which will later visualize those tables:
 ```bash
-$ cd server_code
-$ sudo docker-compose up
+$ cd server_code/
+$ sudo docker compose up
 ```
 ## Step 6: Access Grafana:
 &nbsp;&nbsp;&nbsp;&nbsp;Click on the link to get the data on Grafana: http://ec2-51-20-254-148.eu-north-1.compute.amazonaws.com:3000/public-dashboards/91a4ed78ec064712925d7cc58c83ecee?orgId=1&refresh=5s&from=now-5m&to=now
