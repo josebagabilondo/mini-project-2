@@ -36,7 +36,7 @@ $ make ETHOS_BAUDRATE=500000 DEFAULT_CHANNEL=5 BOARD=iotlab-m3 -C RIOT/examples/
 ```
 &nbsp;&nbsp;&nbsp;&nbsp;Access the node_code file, and with what we have there we will compile all the code we have:
 ```bash
-$ cd node-code
+$ cd node-code/
 $ make DEFAULT_CHANNEL=5 all
 ```
 
