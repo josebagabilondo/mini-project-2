@@ -45,12 +45,13 @@ $ make DEFAULT_CHANNEL=5 all
 ```bash
 $ iotlab-experiment submit -n mini1 -d 60 -l 3,archi=m3:at86rf231+site=grenoble
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;View the activated nodes and their details, take into account the id of the nodes, will be important:
+&nbsp;&nbsp;&nbsp;&nbsp;View the activated nodes and their details, take into account the id of the nodes, will be important. Take into account that the number of your experiment (mine being 388084) will be the id you get after running the command before:
 ```bash
 $ iotlab-experiment get -i 388084 -r
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;Flash router firmware, which means configuring one of the activated nodes as a border router (in our case the 95 is one of the id's seen in with the command before):
+&nbsp;&nbsp;&nbsp;&nbsp;Flash router firmware, which means configuring one of the activated nodes as a border router (in our case the 95 is one of the id's seen in with the command before). Before doing it go back to mini-project-1 file:
 ```bash
+$ cd ..
 $ iotlab-node --flash RIOT/examples/gnrc_border_router/bin/iotlab-m3/gnrc_border_router.elf -l grenoble,m3,95
 ```
 &nbsp;&nbsp;&nbsp;&nbsp;Assign an Ipv6 address to that node (if it says "Device or resource busy" choose a different tap; tap2, tap3, tap4... and another Ipv6 adress; between 2001:660:5307:3100::/64	and 2001:660:5307:317f::/64):
