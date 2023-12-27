@@ -76,7 +76,7 @@ $ ssh -i "IOTLAB.pem" admin@ec2-51-20-254-148.eu-north-1.compute.amazonaws.com
 ```
 &nbsp;&nbsp;&nbsp;&nbsp;Access the server_code, and instruct Docker to start running the coap server, which will get the data of the sensors and upload it on the cloud,  the mysql, which will create given tables with the data, and grafana, which will later visualize those tables:
 ```bash
-$ cd server_code/
+$ cd mini-project-1/server_code/
 $ sudo docker compose up
 ```
 ## Step 6: Access Grafana:
