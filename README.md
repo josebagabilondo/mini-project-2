@@ -5,7 +5,7 @@
 
 &nbsp;&nbsp;&nbsp;&nbsp;Link for how to generate SSH key and associate account to computer: https://www.iot-lab.info/docs/getting-started/ssh-access/
 
-&nbsp;&nbsp;&nbsp;&nbsp;After following what it says in the link, we will do everything inside, for example, Grenoble's frontend:
+&nbsp;&nbsp;&nbsp;&nbsp;After following what it says in the link, we will do everything inside, for example, in Grenoble's frontend:
 
 ```bash
 $ ssh <login>@grenoble.iot-lab.info
