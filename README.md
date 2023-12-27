@@ -68,8 +68,9 @@ $ cd mini-project-1/
 $ iotlab-node --flash node_code/bin/iotlab-m3/mini-project.elf -l grenoble,m3,96+97
 ```
 ## Step 6: Connect to the Server:
-&nbsp;&nbsp;&nbsp;&nbsp;Open a new terminal and in it connect to our server, which is an amazon aws server:
+&nbsp;&nbsp;&nbsp;&nbsp;Open a new terminal and in it connect to our server, which is an amazon aws server. For that, first download a file if don't already have it called iotlab.pem (you can find it inside the github and download it), where there is a public key to be able to connect to the server. We will have to access the place where the file is also before connecting to the server:
 ```bash
+$ cd Downloads/
 $ ssh -i "IOTLAB.pem" admin@ec2-51-20-254-148.eu-north-1.compute.amazonaws.com
 ```
 &nbsp;&nbsp;&nbsp;&nbsp;Access the server_code, and instruct Docker to start running the coap server, which will get the data of the sensors and upload it on the cloud,  the mysql, which will create given tables with the data, and grafana, which will later visualize those tables:
