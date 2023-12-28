@@ -1,6 +1,7 @@
 import datetime
 import logging
 import asyncio
+import signal
 
 from mysql.connector import pooling
 import aiocoap.resource as resource
@@ -85,7 +86,27 @@ def insert_data(payload, data_type,ip_id):
     except:
         print(f"Query error: INSERT INTO {data_type}_data ({data_type}, ts) VALUES ({payload}, CURRENT_TIMESTAMP);")
         connection = create_connection()
+        
+def shutdown_handler(signum, frame):
+    clear_ip_to_id_table()
 
+    # Ensure that the event loop stops
+    asyncio.get_event_loop().stop()
+
+def clear_ip_to_id_table():
+    try:
+        with pool.get_connection() as connection:
+            cursor = connection.cursor()
+            cursor.execute("DELETE FROM ip_to_id")
+            connection.commit()
+    except mysql.connector.Error as err:
+        print(f'Error clearing ip_to_id table: {err}')
+    except Exception as e:
+        print(f"Error clearing ip_to_id table: {e}")
+
+# Register the shutdown_handler to handle termination signals
+signal.signal(signal.SIGINT, shutdown_handler)
+signal.signal(signal.SIGTERM, shutdown_handler)
 
 async def main():
     # Resource tree creation
