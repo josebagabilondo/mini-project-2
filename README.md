@@ -80,7 +80,7 @@ $ cd mini-project-1/server_code/
 $ sudo docker compose up
 ```
 ## Step 6: Access Grafana:
-&nbsp;&nbsp;&nbsp;&nbsp;Click on the link to get the data on Grafana: http://ec2-51-20-254-148.eu-north-1.compute.amazonaws.com:3000/public-dashboards/91a4ed78ec064712925d7cc58c83ecee?orgId=1&refresh=5s&from=now-5m&to=now  
+&nbsp;&nbsp;&nbsp;&nbsp;Click on the link to get the data on Grafana: [http://ec2-51-20-254-148.eu-north-1.compute.amazonaws.com:3000/public-dashboards/91a4ed78ec064712925d7cc58c83ecee?orgId=1&refresh=5s&from=now-5m&to=now ](http://ec2-51-20-254-148.eu-north-1.compute.amazonaws.com:3000/d/f8b2ba85-fd5c-482d-94e1-539f93f85b1b/berria?orgId=1&from=1703806595000&to=1703809330000) 
 
 &nbsp;&nbsp;&nbsp;&nbsp;In it there is data given by different sensors at real time, for temperature pressure and light, and also the messages recived until now and how many node we've activated in the process of creating the mini project 1.
 
