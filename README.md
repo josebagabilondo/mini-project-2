@@ -85,4 +85,4 @@ $ sudo docker compose up
 &nbsp;&nbsp;&nbsp;&nbsp;In it there is data given by different sensors at real time, for temperature pressure and light, and also the messages recived until now and how many node we've activated in the process of creating the mini project 1.
 
 ## Video:
-&nbsp;&nbsp;&nbsp;&nbsp;https://youtu.be/HeRUO_gKO2A
+&nbsp;&nbsp;&nbsp;&nbsp;[https://youtu.be/HeRUO_gKO2A](https://youtu.be/8kjjtQoug-o)https://youtu.be/8kjjtQoug-o
