@@ -287,7 +287,7 @@ void *thread_pres(void *arg) {
         uint16_t pres = 0;
         lpsxxx_read_pres(&lpsxxx, &pres);
         char payload_data[64];
-        pres = pres + add_noise(pressure_stddev)
+        pres = pres + add_noise(pressure_stddev);
         sprintf(payload_data, "%d", pres);
         printf("Thread pressure: %d\n", pres);
         send_coap_post_request(SERVER_ADDR, SERVER_PORT, "/pressure", payload_data);
