@@ -9,6 +9,8 @@
 #include "od.h"
 #include "fmt.h"
 
+#include <math.h>
+
 #include "lpsxxx.h"
 #include "lpsxxx_params.h"
 
@@ -32,6 +34,12 @@ static char _last_req_path[_LAST_REQ_PATH_MAX];
 
 /* Counts requests sent by CLI. */
 static uint16_t req_count = 0;
+
+float temp_mean = 39.456;
+float temp_stddev = 789.2; 
+
+float pressure_mean = 992;
+float pressure_stddev = 99.2; 
 
 mutex_t coap_mutex; 
 
@@ -218,6 +226,29 @@ static void send_coap_post_request(char *server_addr, char *server_port, char *p
 
 }
 
+float generate_normal_random(float stddev) {
+    float M_PI = 3.1415926535;
+
+    // Box-Muller transform to generate random numbers with normal distribution
+    float u1 = rand() / (float)RAND_MAX;
+    float u2 = rand() / (float)RAND_MAX;
+    float z = sqrt(-2 * log(u1)) * cos(2 * M_PI * u2);
+    
+    return stddev * z;
+}
+
+float add_noise(float stddev) {
+    int num;
+    float noise_val = 0;
+    
+    num = rand() % 100 + 1; // use rand() function to get the random number
+    if (num >= 50) {
+        // Generate a random number with normal distribution based on a stddev
+        noise_val = generate_normal_random(stddev);
+    }
+    return noise_val;
+}
+
 void *thread_light(void *arg) {
     (void)arg;
     isl29020_init(&isl29020, &isl29020_params[0]);
@@ -240,6 +271,7 @@ void *thread_temp(void *arg) {
         int16_t temp = 0;
         lpsxxx_read_temp(&lpsxxx, &temp);
         char payload_data[64];
+        temp = temp + add_noise(temp_stddev);
         sprintf(payload_data, "%i.%u", (temp / 100), (temp % 100));
         printf("Thread temperature: %i.%u\n", (temp / 100), (temp % 100));
         send_coap_post_request(SERVER_ADDR, SERVER_PORT, "/temperature", payload_data);
@@ -255,6 +287,7 @@ void *thread_pres(void *arg) {
         uint16_t pres = 0;
         lpsxxx_read_pres(&lpsxxx, &pres);
         char payload_data[64];
+        pres = pres + add_noise(pressure_stddev)
         sprintf(payload_data, "%d", pres);
         printf("Thread pressure: %d\n", pres);
         send_coap_post_request(SERVER_ADDR, SERVER_PORT, "/pressure", payload_data);
