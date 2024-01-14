@@ -73,18 +73,57 @@ class handler(resource.Resource):
         return aiocoap.Message(code=aiocoap.numbers.codes.CREATED, payload=f"ALL OK {payload}".encode('utf-8'))
 
 
-def insert_data(payload, data_type,ip_id):
+def calculate_mean_std_last_n(data_type, ip_id, n=100):
     try:
         with pool.get_connection() as connection:
-            cursor = connection.cursor()
-            query = f"INSERT INTO {data_type}_data ({data_type}, idSensor, time) VALUES ({payload}, {ip_id}, CURRENT_TIMESTAMP);"
+            cursor = connection.cursor(dictionary=True)
+            query = f"SELECT {data_type} FROM {data_type}_data WHERE idSensor = {ip_id} ORDER BY time DESC LIMIT {n};"
             cursor.execute(query)
-            connection.commit()
+            rows = cursor.fetchall()
+            
+            values = [row[data_type] for row in rows]
+            mean_value = sum(values) / len(values)
+            std_deviation = (sum((x - mean_value) ** 2 for x in values) / len(values)) ** 0.5
+
+            return mean_value, std_deviation
+
     except mysql.connector.Error as err:
         print(f'Error: {err}')
-    except:
-        print(f"Query error: INSERT INTO {data_type}_data ({data_type}, ts) VALUES ({payload}, CURRENT_TIMESTAMP);")
-        connection = create_connection()
+        return None, None
+
+def insert_data(payload, data_type, ip_id, deviation_threshold=2):
+    try:
+        mean_value, std_deviation = calculate_mean_std_last_n(data_type, ip_id, n=100)
+
+        if mean_value is not None and std_deviation is not None:
+            deviation = abs(payload - mean_value)
+
+            if deviation <= deviation_threshold * std_deviation:
+                with pool.get_connection() as connection:
+                    cursor = connection.cursor()
+                    query = f"INSERT INTO {data_type}_data ({data_type}, idSensor, time) VALUES ({payload}, {ip_id}, CURRENT_TIMESTAMP);"
+                    cursor.execute(query)
+                    connection.commit()
+            else:
+                print(f"Value {payload} deviates too much from the mean. Replacing with mean value.")
+                payload = mean_value
+                with pool.get_connection() as connection:
+                    cursor = connection.cursor()
+                    query = f"INSERT INTO {data_type}_data ({data_type}, idSensor, time) VALUES ({payload}, {ip_id}, CURRENT_TIMESTAMP);"
+                    cursor.execute(query)
+                    connection.commit()
+
+        if mean_value is non:
+             with pool.get_connection() as connection:
+                    cursor = connection.cursor()
+                    query = f"INSERT INTO {data_type}_data ({data_type}, idSensor, time) VALUES ({payload}, {ip_id}, CURRENT_TIMESTAMP);"
+                    cursor.execute(query)
+                    connection.commit()
+
+    except mysql.connector.Error as err:
+        print(f'Error: {err}')
+    except Exception as e:
+        print(f"Error: {e}")
 
 
 async def main():
