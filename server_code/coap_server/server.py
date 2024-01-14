@@ -91,14 +91,14 @@ def calculate_mean_std_last_n(data_type, ip_id, n=100):
         print(f'Error: {err}')
         return None, None
 
-def insert_data(payload, data_type, ip_id, deviation_threshold=2):
+def insert_data(payload, data_type, ip_id):
     try:
         mean_value, std_deviation = calculate_mean_std_last_n(data_type, ip_id, n=100)
 
         if mean_value is not None and std_deviation is not None:
             deviation = abs(payload - mean_value)
 
-            if deviation <= deviation_threshold * std_deviation:
+            if deviation <= 2 * std_deviation:
                 with pool.get_connection() as connection:
                     cursor = connection.cursor()
                     query = f"INSERT INTO {data_type}_data ({data_type}, idSensor, time) VALUES ({payload}, {ip_id}, CURRENT_TIMESTAMP);"
@@ -113,7 +113,7 @@ def insert_data(payload, data_type, ip_id, deviation_threshold=2):
                     cursor.execute(query)
                     connection.commit()
 
-        if mean_value is non:
+        else:
              with pool.get_connection() as connection:
                     cursor = connection.cursor()
                     query = f"INSERT INTO {data_type}_data ({data_type}, idSensor, time) VALUES ({payload}, {ip_id}, CURRENT_TIMESTAMP);"
