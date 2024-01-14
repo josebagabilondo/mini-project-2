@@ -97,8 +97,9 @@ def insert_data(payload, data_type, ip_id):
 
         if mean_value is not None and std_deviation is not None:
             deviation = abs(payload - mean_value)
+            deviation_threshold=1
 
-            if deviation <= 2 * std_deviation:
+            if deviation <= deviation_threshold * std_deviation:
                 with pool.get_connection() as connection:
                     cursor = connection.cursor()
                     query = f"INSERT INTO {data_type}_data ({data_type}, idSensor, time) VALUES ({payload}, {ip_id}, CURRENT_TIMESTAMP);"
