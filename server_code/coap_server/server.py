@@ -77,7 +77,7 @@ def calculate_mean_std_last_n(data_type, ip_id, n=100):
     try:
         with pool.get_connection() as connection:
             cursor = connection.cursor(dictionary=True)
-            query = f"SELECT {data_type} FROM {data_type}_data ORDER BY time DESC LIMIT {n};"
+            query = f"SELECT {data_type} FROM {data_type}_data WHERE idSensor = {ip_id} ORDER BY time DESC LIMIT {n};"
             cursor.execute(query)
             rows = cursor.fetchall()
             
