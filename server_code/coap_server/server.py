@@ -114,7 +114,7 @@ def insert_data(payload, data_type, ip_id):
                 payload = mean_value
                 with pool.get_connection() as connection:
                     cursor = connection.cursor()
-                    query = f"INSERT INTO {data_type}_data ({data_type}, idSensor, time) VALUES ({payload}, {ip_id}, CURRENT_TIMESTAMP);"
+                    query = f"INSERT INTO {data_type}_data ({data_type}, idSensor, time) VALUES ({mean_value}, {ip_id}, CURRENT_TIMESTAMP);"
                     cursor.execute(query)
                     connection.commit()
 
