@@ -136,7 +136,6 @@ async def main():
     root = resource.Site()
     root.add_resource(["test"], test_handler())
     root.add_resource(["temperature"], handler("temperature"))
-    root.add_resource(["light"], handler("light"))
     root.add_resource(["pressure"], handler("pressure"))
 
 
