@@ -118,6 +118,13 @@ def insert_data(payload, data_type, ip_id):
                     cursor.execute(query)
                     connection.commit()
 
+        if mean_value is None or std_deviation is None:
+            with pool.get_connection() as connection:
+                    cursor = connection.cursor()
+                    query = f"INSERT INTO {data_type}_data ({data_type}, idSensor, time) VALUES ({payload}, {ip_id}, CURRENT_TIMESTAMP);"
+                    cursor.execute(query)
+                    connection.commit()
+
     except mysql.connector.Error as err:
         print(f'Error: {err}')
     except Exception as e:
