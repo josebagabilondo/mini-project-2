@@ -95,9 +95,13 @@ def insert_data(payload, data_type, ip_id):
     try:
         mean_value, std_deviation = calculate_mean_std_last_n(data_type, ip_id, n=100)
 
+        if data_type = "temperature":
+            deviation_treshold = 0.1
+        if data_type = "pressure":
+            deviation_treshold = 0.5
+        
         if mean_value is not None and std_deviation is not None:
             deviation = abs(payload - mean_value)
-            deviation_threshold=1
 
             if deviation <= deviation_threshold * std_deviation:
                 with pool.get_connection() as connection:
