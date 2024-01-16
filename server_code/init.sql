@@ -7,9 +7,9 @@ CREATE TABLE IF NOT EXISTS pressure_data (
     time TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS light_data (
+CREATE TABLE IF NOT EXISTS temperature_data (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    light INT,
+    temperature FLOAT,
     idSensor INT,
     time TIMESTAMP
 );
