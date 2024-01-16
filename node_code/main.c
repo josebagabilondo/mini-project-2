@@ -14,9 +14,6 @@
 #include "lpsxxx.h"
 #include "lpsxxx_params.h"
 
-#include "isl29020.h"
-#include "isl29020_params.h"
-
 #include "xtimer.h"
 
 #include "thread.h"
@@ -24,7 +21,6 @@
 #include "mutex.h"
 
 static lpsxxx_t lpsxxx;
-static isl29020_t isl29020;
 
 static bool _proxied = false;
 static sock_udp_ep_t _proxy_remote;
@@ -48,7 +44,6 @@ mutex_t coap_mutex;
 
 char temp_thread_stack[THREAD_STACKSIZE_MAIN];
 char pres_thread_stack[THREAD_STACKSIZE_MAIN];
-char light_thread_stack[THREAD_STACKSIZE_MAIN];
 
 static void _resp_handler(const gcoap_request_memo_t *memo, coap_pkt_t* pdu,
                           const sock_udp_ep_t *remote)
@@ -249,21 +244,6 @@ float add_noise(float stddev) {
     return noise_val;
 }
 
-void *thread_light(void *arg) {
-    (void)arg;
-    isl29020_init(&isl29020, &isl29020_params[0]);
-    while (1) {
-        int lux = isl29020_read(&isl29020);
-        char payload_data[64];
-        sprintf(payload_data, "%d", lux);
-        printf("Thread light: %d", lux);
-        send_coap_post_request(SERVER_ADDR, SERVER_PORT, "/light", payload_data);
-        xtimer_sleep(4);
-    }
-
-    return NULL;
-}
-
 void *thread_temp(void *arg) {
     (void)arg;
     lpsxxx_init(&lpsxxx, &lpsxxx_params[0]);
@@ -307,7 +287,4 @@ int main(void)
                   THREAD_PRIORITY_MAIN - 1, THREAD_CREATE_STACKTEST,
                 thread_pres, NULL, "pres_thread");
 
-    thread_create(light_thread_stack, sizeof(light_thread_stack),
-                THREAD_PRIORITY_MAIN - 1, THREAD_CREATE_STACKTEST,
-                thread_light, NULL, "light_thread");
 }
