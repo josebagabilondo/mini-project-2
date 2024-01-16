@@ -1,11 +1,11 @@
-# Mini Project 1
-#### In this readme, we will explain step by step how to connect data from sensors to the cloud and upload it there, via different commands that you will run. That data will be visualized in charts.
+# Mini Project 2
+#### In this readme, we will explain step by step how to connect data from sensors to the cloud, doing a preprocess of that data where we try to smooth it out and recieve the correct data to the cloud. Also, the data won't be just recieved by one site as before, in this case we will get data from three different sites and three different boars in each site. 
 
 ## Step 0: Access iot lab testbed
 
 &nbsp;&nbsp;&nbsp;&nbsp;Link for how to generate SSH key and associate account to computer: https://www.iot-lab.info/docs/getting-started/ssh-access/
 
-&nbsp;&nbsp;&nbsp;&nbsp;After following what it says in the link, we will do everything inside, for example, in Grenoble's frontend:
+&nbsp;&nbsp;&nbsp;&nbsp;After following what it says in the link, we will do everything inside, for example, in Grenoble's frontend. We could do this next steps in each one of the three sites also, but it's not necessary and it would take a lot of time:
 
 ```bash
 $ ssh <login>@grenoble.iot-lab.info
@@ -13,11 +13,11 @@ $ ssh <login>@grenoble.iot-lab.info
 ## Step 1: Clone the Repository
 
 ```bash
-$ git clone https://github.com/manexsora/mini-project-1
+$ git clone https://github.com/josebagabilondo/mini-project-2
 ```
 &nbsp;&nbsp;&nbsp;&nbsp;Access repository:
 ```bash
-$ cd mini-project-1/
+$ cd mini-project-2/
 ```
 
 ## Step 2: Clone RIOT Operating System
@@ -36,7 +36,7 @@ $ make ETHOS_BAUDRATE=500000 DEFAULT_CHANNEL=5 BOARD=iotlab-m3 -C RIOT/examples/
 ```
 &nbsp;&nbsp;&nbsp;&nbsp;Access the node_code file, and with what we have there we will compile all the code we have:
 ```bash
-$ cd node-code/
+$ cd node_code/
 $ make DEFAULT_CHANNEL=5 all
 ```
 
