@@ -9,6 +9,8 @@
 #include "od.h"
 #include "fmt.h"
 
+#include <math.h>
+
 #include "lpsxxx.h"
 #include "lpsxxx_params.h"
 
