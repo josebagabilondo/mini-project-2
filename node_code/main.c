@@ -229,7 +229,8 @@ static void send_coap_post_request(char *server_addr, char *server_port, char *p
 float generate_normal_random(float stddev) {
     float M_PI = 3.1415926535;
 
-    // Box-Muller transform to generate random numbers with normal distribut$    float u1 = rand() / (float)RAND_MAX;
+    // Box-Muller transform to generate random numbers with normal distribution  
+    float u1 = rand() / (float)RAND_MAX;
     float u2 = rand() / (float)RAND_MAX;
     float z = sqrt(-2 * log(u1)) * cos(2 * M_PI * u2);
     
@@ -242,7 +243,8 @@ float add_noise(float stddev) {
     
     num = rand() % 100 + 1; // use rand() function to get the random number  
     if (num >= 50) {
-        // Generate a random number with normal distribution based on a stdd$        noise_val = generate_normal_random(stddev);
+        // Generate a random number with normal distribution based on a stddev      
+        noise_val = generate_normal_random(stddev);
     }
     return noise_val;
 }
