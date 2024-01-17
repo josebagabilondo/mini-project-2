@@ -271,8 +271,9 @@ void *thread_temp(void *arg) {
         char payload_data[64];
         temp = temp + add_noise(temp_stddev);
         sprintf(payload_data, "%i.%u", (temp / 100), (temp % 100));
-        printf("Thread temperature: %i.%u\n", (temp / 100), (temp % 100));   
--        send_coap_post_request(SERVER_ADDR, SERVER_PORT, "/temperature", pa$        xtimer_sleep(4);
+        printf("Thread temperature: %i.%u\n", (temp / 100), (temp % 100));
+        send_coap_post_request(SERVER_ADDR, SERVER_PORT, "/temperature", payload_data);
+        xtimer_sleep(4);
     }
 
     return NULL;
@@ -287,7 +288,8 @@ void *thread_pres(void *arg) {
         pres = pres + add_noise(pressure_stddev);
         sprintf(payload_data, "%d", pres);
         printf("Thread pressure: %d\n", pres);
-        send_coap_post_request(SERVER_ADDR, SERVER_PORT, "/pressure", payloa$        xtimer_sleep(4);
+        send_coap_post_request(SERVER_ADDR, SERVER_PORT, "/pressure", payload_data);
+        xtimer_sleep(4);
     }
 
     return NULL;
