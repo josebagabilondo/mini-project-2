@@ -103,12 +103,12 @@ $ iotlab-node --flash node_code/bin/iotlab-m3/mini-project.elf -l lille,m3,101+1
 $ iotlab-node --flash node_code/bin/iotlab-m3/mini-project.elf -l saclay,m3,10+11+12
 ```
 ## Step 6: Connect to the Server:
-&nbsp;&nbsp;&nbsp;&nbsp;Open a new terminal and in it connect to our server, which is an amazon aws server. For that, **(nola sortzen den iotlab.pem dokumentua, eta servidorea nola sortu zen)**, where there is a public key to be able to connect to the server. We will have to access the place where the file is also before connecting to the server:
+&nbsp;&nbsp;&nbsp;&nbsp;Open a new terminal and in it connect to our server, which is an amazon aws server. To create our server, which runs in aws iot, we had to first create a free account and after create a machine to run our IoT project in. That directly assigned an ip address to our machine, and also created a .pem file, that we use to access our server. To do that we will have to get to the place where the file is also before connecting to the server:
 ```bash
 $ cd Downloads/
 $ ssh -i "IOTLAB.pem" admin@ec2-51-20-254-148.eu-north-1.compute.amazonaws.com
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;In our case is already done, and in yours also if you work in our server, but we had to change the firewall with the next command, on which incomming traffic is accepted in the 5683 port:
+&nbsp;&nbsp;&nbsp;&nbsp;In our case is already done, but we had to change the firewall with the next command, on which incomming traffic is accepted in the 5683 port:
 ```bash
 $ sudo iptables -A INPUT -p udp --dport 5683 -j ACCEPT
 ```
