@@ -77,12 +77,12 @@ def calculate_mean_std_last_n(data_type, ip_id, n=100):
     try:
         with pool.get_connection() as connection:
             cursor = connection.cursor(dictionary=True)
-            query = f"SELECT {data_type} FROM {data_type}_data WHERE idSensor = {ip_id} ORDER BY time DESC LIMIT {n};"
+            query = f"SELECT {data_type} FROM {data_type}_data ORDER BY time DESC LIMIT {n};"
             cursor.execute(query)
             rows = cursor.fetchall()
             
             values = [row[data_type] for row in rows]
-            if len(values) > 0:
+            if len(values) == 1000:
                 mean_value = sum(values) / len(values)
                 std_deviation = (sum((x - mean_value) ** 2 for x in values) / len(values)) ** 0.5
                 return mean_value, std_deviation
