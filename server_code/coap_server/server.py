@@ -82,8 +82,11 @@ def calculate_mean_std_last_n(data_type, ip_id, n=100):
             rows = cursor.fetchall()
             
             values = [row[data_type] for row in rows]
-            mean_value = sum(values) / len(values)
-            std_deviation = (sum((x - mean_value) ** 2 for x in values) / len(values)) ** 0.5
+            mean_value = 0
+            std:deviation = 0
+            if values != 0:
+                mean_value = sum(values) / len(values)
+                std_deviation = (sum((x - mean_value) ** 2 for x in values) / len(values)) ** 0.5
 
             return mean_value, std_deviation
 
@@ -115,7 +118,7 @@ def insert_data(payload, data_type, ip_id):
                     cursor.execute(query)
                     connection.commit()
 
-        if mean_value is None or std_deviation is None:
+        if mean_value==0 or std_deviation==0:
             with pool.get_connection() as connection:
                     cursor = connection.cursor()
                     query = f"INSERT INTO {data_type}_data ({data_type}, idSensor, time) VALUES ({payload}, {ip_id}, CURRENT_TIMESTAMP);"
