@@ -82,11 +82,12 @@ def calculate_mean_std_last_n(data_type, ip_id, n=100):
             rows = cursor.fetchall()
             
             values = [row[data_type] for row in rows]
-            if values is not None:
+            if len(values) > 0:
                 mean_value = sum(values) / len(values)
                 std_deviation = (sum((x - mean_value) ** 2 for x in values) / len(values)) ** 0.5
-
-            return mean_value, std_deviation
+                return mean_value, std_deviation
+            else:
+                return None, None
 
     except mysql.connector.Error as err:
         print(f'Error: {err}')
