@@ -117,7 +117,7 @@ def insert_data(payload, data_type, ip_id):
                     cursor.execute(query)
                     connection.commit()
 
-        if mean_value==0 or std_deviation==0:
+        if mean_value is None or std_deviation is None:
             with pool.get_connection() as connection:
                     cursor = connection.cursor()
                     query = f"INSERT INTO {data_type}_data ({data_type}, idSensor, time) VALUES ({payload}, {ip_id}, CURRENT_TIMESTAMP);"
