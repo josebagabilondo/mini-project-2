@@ -82,7 +82,7 @@ def calculate_mean_std_last_n(data_type, ip_id, n=100):
             rows = cursor.fetchall()
             
             values = [row[data_type] for row in rows]
-            if len(values) == 1000:
+            if len(values) == n:
                 mean_value = sum(values) / len(values)
                 std_deviation = (sum((x - mean_value) ** 2 for x in values) / len(values)) ** 0.5
                 return mean_value, std_deviation
@@ -99,7 +99,7 @@ def insert_data(payload, data_type, ip_id):
 
         payload = float(payload)
 
-        deviation_threshold = 1
+        deviation_threshold = 2
         
         if mean_value is not None and std_deviation is not None:
             deviation = abs(payload - mean_value)
