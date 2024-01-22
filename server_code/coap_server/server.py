@@ -84,7 +84,7 @@ def calculate_mean_std_last_n(data_type, ip_id, n=100):
             values = [row[data_type] for row in rows]
             mean_value = 0
             std:deviation = 0
-            if values != 0:
+            if values not None:
                 mean_value = sum(values) / len(values)
                 std_deviation = (sum((x - mean_value) ** 2 for x in values) / len(values)) ** 0.5
 
