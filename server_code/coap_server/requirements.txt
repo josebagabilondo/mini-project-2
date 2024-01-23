@@ -1,2 +1,3 @@
 aiocoap
 mysql-connector-python
+numpy
