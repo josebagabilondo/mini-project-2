@@ -140,6 +140,7 @@ def insert_data(payload, data_type, ip_id):
             deviation = abs(payload - expected_value)
 
             print(f'LINEAR REGRESSION: Expected value {expected_value} / Actual value {payload}')
+            deviation_threshold = 5
 
             if deviation <= deviation_threshold:
                 insert_data_point(payload, data_type, ip_id)
@@ -162,6 +163,7 @@ def insert_data_point(payload, data_type, ip_id):
         with pool.get_connection() as connection:
             cursor = connection.cursor()
             query = f"INSERT INTO {data_type}_data ({data_type}, idSensor, time) VALUES ({payload}, {ip_id}, CURRENT_TIMESTAMP);"
+            print('Data inserted')
             cursor.execute(query)
             connection.commit()
 
