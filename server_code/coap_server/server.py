@@ -78,7 +78,7 @@ def calculate_mean_std_last_n(data_type, ip_id, n=100):
     try:
         with pool.get_connection() as connection:
             if data_type == "light":
-            return
+                return
             cursor = connection.cursor(dictionary=True)
             query = f"SELECT {data_type} FROM {data_type}_data WHERE idSensor = {ip_id} ORDER BY time DESC LIMIT {n};"
             cursor.execute(query)
@@ -100,7 +100,7 @@ def linear_regression(data_type, ip_id, n=100):
     try:
         with pool.get_connection() as connection:
             if data_type == "light":
-            return
+                return
             cursor = connection.cursor(dictionary=True)
             query = f"SELECT time, {data_type} FROM {data_type}_data WHERE idSensor = {ip_id} ORDER BY time DESC LIMIT {n};"
             cursor.execute(query)
