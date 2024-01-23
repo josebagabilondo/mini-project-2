@@ -140,7 +140,10 @@ def insert_data(payload, data_type, ip_id):
             deviation = abs(payload - expected_value)
 
             print(f'LINEAR REGRESSION: Expected value {expected_value} / Actual value {payload}')
-            deviation_threshold = 5
+            if data_type == "temperature":
+                deviation_threshold = 5
+            else:
+                deviation_threshold = 50
 
             if deviation <= deviation_threshold:
                 insert_data_point(payload, data_type, ip_id)
