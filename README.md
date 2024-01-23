@@ -60,13 +60,13 @@ $ iotlab-node --flash RIOT/examples/gnrc_border_router/bin/iotlab-m3/gnrc_border
 ```bash
 $ iotlab-experiment submit -n mini1 -d 60 -l 4,archi=m3:at86rf231+site=lille
 $ iotlab-experiment get -i 38911 -r
-$ iotlab-node --flash RIOT/examples/gnrc_border_router/bin/iotlab-m3/gnrc_border_router.elf -l lille,m3,100
+$ iotlab-node --flash RIOT/examples/gnrc_border_router/bin/iotlab-m3/gnrc_border_router.elf -l lille,m3,100 -i 38911
 ```
 &nbsp;&nbsp;&nbsp;&nbsp;And then Saclay:
 ```bash
 $ iotlab-experiment submit -n mini1 -d 60 -l 4,archi=m3:at86rf231+site=saclay
-$ iotlab-experiment get -i 38911 -r
-$ iotlab-node --flash RIOT/examples/gnrc_border_router/bin/iotlab-m3/gnrc_border_router.elf -l saclay,m3,9
+$ iotlab-experiment get -i 38912 -r
+$ iotlab-node --flash RIOT/examples/gnrc_border_router/bin/iotlab-m3/gnrc_border_router.elf -l saclay,m3,9 -i 38912
 ```
 &nbsp;&nbsp;&nbsp;&nbsp;Assign an Ipv6 address to the Grenoble node (if it says "Device or resource busy" choose a different tap; tap2, tap3, tap4... and another Ipv6 adress; between 2001:660:5307:3100::/64	and 2001:660:5307:317f::/64):
 ```bash
@@ -92,15 +92,15 @@ $ cd mini-project-2/
 ```
 &nbsp;&nbsp;&nbsp;&nbsp;Prepare the other nodes for their roles in the experiment, taking the compiled code of the second make command (take the id's of the nodes that weren't used for the border router):
 ```bash
-$ iotlab-node --flash node_code/bin/iotlab-m3/mini-project.elf -l grenoble,m3,96+97+102
+$ iotlab-node --flash node_code/bin/iotlab-m3/mini-project.elf -l grenoble,m3,96+97+102 -i 38910
 ```
 &nbsp;&nbsp;&nbsp;&nbsp;In the same terminal, do the same for the nodes in Lille that weren't used for the router:
 ```bash
-$ iotlab-node --flash node_code/bin/iotlab-m3/mini-project.elf -l lille,m3,101+102+103
+$ iotlab-node --flash node_code/bin/iotlab-m3/mini-project.elf -l lille,m3,101+102+103 -i 38911
 ```
 &nbsp;&nbsp;&nbsp;&nbsp;And for the nodes in Saclay:
 ```bash
-$ iotlab-node --flash node_code/bin/iotlab-m3/mini-project.elf -l saclay,m3,10+11+12
+$ iotlab-node --flash node_code/bin/iotlab-m3/mini-project.elf -l saclay,m3,10+11+12 -i 38912
 ```
 ## Step 6: Connect to the Server:
 &nbsp;&nbsp;&nbsp;&nbsp;Open a new terminal and in it connect to our server, which is an amazon aws server. To create our server, which runs in aws iot, we had to first create a free account and after create a machine to run our IoT project in. That directly assigned an ip address to our machine, and also created a .pem file, that we use to access our server. To do that we will have to get to the place where the file is also before connecting to the server:
@@ -123,7 +123,7 @@ $ sudo docker compose up
 
 &nbsp;&nbsp;&nbsp;&nbsp;In it there is data given by different sensors at real time, for temperature and pressure, and also the messages recived until now and how many node we've activated in the process of creating the mini project 2. The setup of the Grafana consisted on accessing the Grafana created with the information of our Dockerfile, and in there adding the databases that we have in our init.sql, so that the data introduced would match the structure. Later a dashboard was created were we visualized the incoming data.
 
-&nbsp;&nbsp;&nbsp;&nbsp;To do the visualization of Grafana we decided to assign the ids of the sensors manually to variables of both pressure and temperature. For that, in the bottom left corner of the dashboard there is a table where you can get the 9 id's that should be activated, and that you have to enter in the nine different variables of the top of the dashboard, for both temperature and pressure. It's easier to understand watching the actual video.
+&nbsp;&nbsp;&nbsp;&nbsp;To do the visualization of Grafana we decided to assign the ids of the sensors manually to variables of both pressure and temperature. For that, in the bottom left corner of the dashboard there is a table where you can get the 9 id's that should be activated, and that you have to enter in the nine different variables of the top of the dashboard, for both temperature and pressure. It's easier to understand watching the actual video. Also take into account that maybe some of the sensors give erroneous data.
 
 ## Video:
 &nbsp;&nbsp;&nbsp;&nbsp;[https://youtu.be/HeRUO_gKO2A](https://youtu.be/8kjjtQoug-o)https://youtu.be/8kjjtQoug-o
