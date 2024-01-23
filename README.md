@@ -81,7 +81,7 @@ $ sudo ethos_uhcpd.py m3-100 tap1 2001:660:4403:0480::/64
 ```
 &nbsp;&nbsp;&nbsp;&nbsp;For Saclay, if busy, Ipv6 adress between 2001:660:3207:04c0::/64	and 2001:660:3207:04ff::/64:
 ```bash
-$ ssh <login>@lille.iot-lab.info
+$ ssh <login>@saclay.iot-lab.info
 $ sudo ethos_uhcpd.py m3-9 tap1 2001:660:3207:04c0::/64
 ```
 ## Step 5: Flash sensor firmware
@@ -108,9 +108,10 @@ $ iotlab-node --flash node_code/bin/iotlab-m3/mini-project.elf -l saclay,m3,10+1
 $ cd Downloads/
 $ ssh -i "IOTLAB.pem" admin@ec2-51-20-127-146.eu-north-1.compute.amazonaws.com
 ```
-&nbsp;&nbsp;&nbsp;&nbsp;In our case is already done, but we had to change the firewall with the next command, on which incomming traffic is accepted in the 5683 port:
+&nbsp;&nbsp;&nbsp;&nbsp;In our case is already done, but we had to change the firewall with the next command, on which incomming traffic is accepted in the 5683 port. Also if done in another server, it's necessary to clone this github:
 ```bash
 $ sudo iptables -A INPUT -p udp --dport 5683 -j ACCEPT
+$ git clone https://github.com/josebagabilondo/mini-project-2
 ```
 &nbsp;&nbsp;&nbsp;&nbsp;Access the server_code, and instruct Docker to start running the coap server, which will get the data of the sensors and upload it on the cloud,  the mysql, which will create given tables with the data, and grafana, which will later visualize those tables:
 ```bash
@@ -118,11 +119,11 @@ $ cd mini-project-1/server_code/
 $ sudo docker compose up
 ```
 ## Step 6: Access Grafana:
-&nbsp;&nbsp;&nbsp;&nbsp;Click on the link to get the data on Grafana: [http://ec2-51-20-254-148.eu-north-1.compute.amazonaws.com:3000/public-dashboards/91a4ed78ec064712925d7cc58c83ecee?orgId=1&refresh=5s&from=now-5m&to=now ](http://ec2-51-20-254-148.eu-north-1.compute.amazonaws.com:3000/d/f8b2ba85-fd5c-482d-94e1-539f93f85b1b/berria?orgId=1&from=1703806595000&to=1703809330000) 
+&nbsp;&nbsp;&nbsp;&nbsp;Click on the link to get the data on Grafana: [http://ec2-51-20-127-146.eu-north-1.compute.amazonaws.com:3000]([http://ec2-51-20-254-148.eu-north-1.compute.amazonaws.com:3000/d/f8b2ba85-fd5c-482d-94e1-539f93f85b1b/berria?orgId=1&from=1703806595000&to=1703809330000](http://ec2-51-20-127-146.eu-north-1.compute.amazonaws.com:3000/d/f8b2ba85-fd5c-482d-94e1-539f93f85b1b/berria?orgId=1&from=now-5m&to=now&var-lastIdPressure=7&var-secondToPressure=23&var-LastIdTemp=23&var-secondToTemp=7&var-lastToLight=21&var-secondToLight=6)) 
 
 &nbsp;&nbsp;&nbsp;&nbsp;In it there is data given by different sensors at real time, for temperature and pressure, and also the messages recived until now and how many node we've activated in the process of creating the mini project 2. The setup of the Grafana consisted on accessing the Grafana created with the information of our Dockerfile, and in there adding the databases that we have in our init.sql, so that the data introduced would match the structure. Later a dashboard was created were we visualized the incoming data.
 
-&nbsp;&nbsp;&nbsp;&nbsp;**Explikatu variableena**
+&nbsp;&nbsp;&nbsp;&nbsp;To do the visualization of Grafana we decided to assign the ids of the sensors manually to variables of both pressure and temperature. For that, in the bottom left corner of the dashboard there is a table where you can get the 9 id's that should be activated, and that you have to enter in the nine different variables of the top of the dashboard, for both temperature and pressure. It's easier to understand watching the actual video.
 
 ## Video:
 &nbsp;&nbsp;&nbsp;&nbsp;[https://youtu.be/HeRUO_gKO2A](https://youtu.be/8kjjtQoug-o)https://youtu.be/8kjjtQoug-o
