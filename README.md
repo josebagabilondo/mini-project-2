@@ -119,7 +119,7 @@ $ cd mini-project-1/server_code/
 $ sudo docker compose up
 ```
 ## Step 6: Access Grafana:
-&nbsp;&nbsp;&nbsp;&nbsp;Click on the link to get the data on Grafana: [http://ec2-51-20-127-146.eu-north-1.compute.amazonaws.com:3000]([http://ec2-51-20-254-148.eu-north-1.compute.amazonaws.com:3000/d/f8b2ba85-fd5c-482d-94e1-539f93f85b1b/berria?orgId=1&from=1703806595000&to=1703809330000](http://ec2-51-20-127-146.eu-north-1.compute.amazonaws.com:3000/d/f8b2ba85-fd5c-482d-94e1-539f93f85b1b/berria?orgId=1&from=now-5m&to=now&var-lastIdPressure=7&var-secondToPressure=23&var-LastIdTemp=23&var-secondToTemp=7&var-lastToLight=21&var-secondToLight=6)) 
+&nbsp;&nbsp;&nbsp;&nbsp;Click on the link to get the data on Grafana: [http://ec2-51-20-127-146.eu-north-1.compute.amazonaws.com:3000](http://ec2-51-20-127-146.eu-north-1.compute.amazonaws.com:3000/d/f8b2ba85-fd5c-482d-94e1-539f93f85b1b/berria?orgId=1&var-Temp1=34&var-Temp2=23&var-Temp3=23&var-Temp4=0&var-Temp5=0&var-Temp6=0&var-Temp7=0&var-Temp8=0&var-Temp9=0&var-Press1=34&var-Press2=22&var-Press3=23&var-Press4=0&var-Press5=0&var-Press6=0&var-Press7=0&var-Press8=0&var-Press9=0&from=now-5m&to=now)
 
 &nbsp;&nbsp;&nbsp;&nbsp;In it there is data given by different sensors at real time, for temperature and pressure, and also the messages recived until now and how many node we've activated in the process of creating the mini project 2. The setup of the Grafana consisted on accessing the Grafana created with the information of our Dockerfile, and in there adding the databases that we have in our init.sql, so that the data introduced would match the structure. Later a dashboard was created were we visualized the incoming data.
 
