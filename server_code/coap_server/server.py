@@ -1,6 +1,7 @@
 import datetime
 import logging
 import asyncio
+import numpy as np
 
 from mysql.connector import pooling
 import aiocoap.resource as resource
@@ -93,10 +94,36 @@ def calculate_mean_std_last_n(data_type, ip_id, n=100):
         print(f'Error: {err}')
         return None, None
 
+def linear_regression(data_type, ip_id, n=100):
+    try:
+        with pool.get_connection() as connection:
+            cursor = connection.cursor(dictionary=True)
+            query = f"SELECT time, {data_type} FROM {data_type}_data WHERE idSensor = {ip_id} ORDER BY time DESC LIMIT {n};"
+            cursor.execute(query)
+            rows = cursor.fetchall()
+
+            times = [row['time'] for row in rows]
+            values = [row[data_type] for row in rows]
+
+            if len(values) >= 2:
+                x = np.arange(len(times))
+                y = np.array(values, dtype=float)
+
+                slope, intercept = np.polyfit(x, y, 1)
+                return slope, intercept
+            else:
+                return None, None
+
+    except mysql.connector.Error as err:
+        print(f'Error: {err}')
+        return None, None
+
 def insert_data(payload, data_type, ip_id):
     try:
         mean_value, std_deviation = calculate_mean_std_last_n(data_type, ip_id, n=100)
         print(f'Actual value:{payload}, mean vale:{mean_value}, standard deviation:{std_deviation}')
+        slope, intercept = linear_regression(data_type, ip_id, n=100)
+        
         payload = float(payload)
 
         deviation_threshold = 2
@@ -104,27 +131,39 @@ def insert_data(payload, data_type, ip_id):
         if mean_value is not None and std_deviation is not None:
             deviation = abs(payload - mean_value)
 
-            if deviation <= deviation_threshold * std_deviation:
-                with pool.get_connection() as connection:
-                    cursor = connection.cursor()
-                    query = f"INSERT INTO {data_type}_data ({data_type}, idSensor, time) VALUES ({payload}, {ip_id}, CURRENT_TIMESTAMP);"
-                    cursor.execute(query)
-                    connection.commit()
-            else:
+            if deviation > deviation_threshold * std_deviation:
                 print(f"Value {payload} deviates too much from the mean. Replacing with mean value.")
                 payload = mean_value
-                with pool.get_connection() as connection:
-                    cursor = connection.cursor()
-                    query = f"INSERT INTO {data_type}_data ({data_type}, idSensor, time) VALUES ({payload}, {ip_id}, CURRENT_TIMESTAMP);"
-                    cursor.execute(query)
-                    connection.commit()
 
-        if mean_value is None or std_deviation is None:
-            with pool.get_connection() as connection:
-                    cursor = connection.cursor()
-                    query = f"INSERT INTO {data_type}_data ({data_type}, idSensor, time) VALUES ({payload}, {ip_id}, CURRENT_TIMESTAMP);"
-                    cursor.execute(query)
-                    connection.commit()
+        if slope is not None and intercept is not None:
+            expected_value = slope * len(ip_to_number) + intercept
+            deviation = abs(payload - expected_value)
+
+            print(f'LINEAR REGRESSION: Expected value {expected_value} / Actual value {payload}')
+
+            if deviation <= deviation_threshold:
+                insert_data_point(payload, data_type, ip_id)
+
+            else:
+                print(f"Value {payload} deviates too much from the expected linear regression. Replacing with expected value.")
+                payload = expected_value
+                insert_data_point(payload, data_type, ip_id)
+            
+        else:
+            insert_data_point(payload, data_type, ip_id)
+
+    except mysql.connector.Error as err:
+        print(f'Error: {err}')
+    except Exception as e:
+        print(f"Error: {e}")
+
+def insert_data_point(payload, data_type, ip_id):
+    try:
+        with pool.get_connection() as connection:
+            cursor = connection.cursor()
+            query = f"INSERT INTO {data_type}_data ({data_type}, idSensor, time) VALUES ({payload}, {ip_id}, CURRENT_TIMESTAMP);"
+            cursor.execute(query)
+            connection.commit()
 
     except mysql.connector.Error as err:
         print(f'Error: {err}')
