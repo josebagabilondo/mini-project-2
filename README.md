@@ -126,4 +126,4 @@ $ sudo docker compose up
 &nbsp;&nbsp;&nbsp;&nbsp;To do the visualization of Grafana we decided to assign the ids of the sensors manually to variables of both pressure and temperature. For that, in the bottom left corner of the dashboard there is a table where you can get the 9 id's that should be activated, and that you have to enter in the nine different variables of the top of the dashboard, for both temperature and pressure. It's easier to understand watching the actual video. Also take into account that maybe some of the sensors give erroneous data.
 
 ## Video:
-&nbsp;&nbsp;&nbsp;&nbsp;[https://youtu.be/HeRUO_gKO2A](https://youtu.be/8kjjtQoug-o)https://youtu.be/8kjjtQoug-o
+&nbsp;&nbsp;&nbsp;&nbsp;https://youtu.be/qMzb8GepOYw
